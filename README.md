@@ -1,6 +1,6 @@
 # Google PubSub (Laravel Broadcaster)
 Laravel Broadcaster using [Google PubSub](https://cloud.google.com/pubsub/)
-> Currently on development, changes may drastically occur without further notice 
+> __/!\ NOTE: Currently on development, changes may drastically occur without further notice__ 
 
 ### Requirements
 - PHP `^7.1`

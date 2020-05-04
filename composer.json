@@ -1,0 +1,42 @@
+{
+  "name": "jag/laravel-broadcaster-google-pubsub",
+  "description": "Google PubSub on Laravel Broadcaster",
+  "type": "library",
+  "require": {
+    "illuminate/broadcasting": "^7.0",
+    "illuminate/support": "^7.0",
+    "illuminate/log": "^7.0",
+    "php": "^7.1",
+    "google/cloud-pubsub": "^1.24"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^5.2",
+    "phpunit/phpunit": "^9"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jay Are Galinada",
+      "email": "jayaregalinada@gmail.com",
+      "homepage": "https://jayaregalinada.github.io",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Jag\\Broadcaster\\GooglePubSub\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Jag\\Broadcaster\\GooglePubSub\\Providers\\LaravelPubSubServiceProvider"
+      ]
+    }
+  },
+  "prefer-stable": true,
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev"
+}
