@@ -26,9 +26,7 @@ On `config/app.php`
 ]
 ...
 ```
-on Lumen however, 
-
-On `bootstrap/app.php`
+If Lumen however, on your `bootstrap/app.php`
 ```php
 ...
 $app->register(Jag\Broadcaster\GooglePubSub\Providers\LaravelPubSubServiceProvider::class);
