@@ -57,8 +57,8 @@ return [
         // Usually other connections here like pusher, redis, log & null by default
         'google' => [
             'driver' => 'google',
-            'projectId' => env('GOOGLE_PUBSUB_BROADCASTER_PROJECT_ID', env('GOOGLE_PROJECT_ID', env('GCLOUD_PROJECT'))),
-            'keyFilePath' => env('GOOGLE_PUBSUB_BROADCASTER_CREDENTIALS', env('GOOGLE_APPLICATION_CREDENTIALS')),
+            'project_id' => env('GOOGLE_PUBSUB_BROADCASTER_PROJECT_ID', env('GOOGLE_PROJECT_ID', env('GCLOUD_PROJECT'))),
+            'credentials_path' => env('GOOGLE_PUBSUB_BROADCASTER_CREDENTIALS', env('GOOGLE_APPLICATION_CREDENTIALS')),
             'auto_create_topic' => env('GOOGLE_PUBSUB_BROADCASTER_AUTO_CREATE_TOPIC', false),
             'override_config' => [],
         ]
@@ -91,6 +91,14 @@ return [
     ],
 ];
 ``` 
+
+| Key               | Description                             | Type    | Default                                                                                      |
+|-------------------|-----------------------------------------|---------|----------------------------------------------------------------------------------------------|
+| project_id        | PubSub Project ID                       | String  | env('GOOGLE_PUBSUB_BROADCASTER_PROJECT_ID', env('GOOGLE_PROJECT_ID', env('GCLOUD_PROJECT'))) |
+| credentials_path  | Path for credentials                    | String  | env('GOOGLE_PUBSUB_BROADCASTER_CREDENTIALS', env('GOOGLE_APPLICATION_CREDENTIALS'))          |
+| auto_create_topic | Create Topic if non-existing            | Boolean | env('GOOGLE_PUBSUB_BROADCASTER_AUTO_CREATE_TOPIC', false),                                   |
+| override_config   | Override configuration except projectId | Array   | []                                                                                           |
+
 ## Usage
 To use these in your Events, make sure to implement `Illuminate\Contracts\Broadcasting\ShouldBroadcast` and add the topic on `broadcastOn()`.
 
