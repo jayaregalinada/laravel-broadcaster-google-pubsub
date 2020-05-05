@@ -37,14 +37,14 @@ class LaravelPubSubServiceProvider extends ServiceProvider
             return array_merge(
                 $config->get(self::CONFIG_KEY . '.override_config', []),
                 [
-                    'projectId' => $config->get(self::CONFIG_KEY . '.projectId'),
+                    'projectId' => $config->get(self::CONFIG_KEY . '.project_id'),
                 ]
             );
         }
 
         return [
-            'projectId' => $config->get(self::CONFIG_KEY . '.projectId'),
-            'keyFilePath' => $this->getKeyContent($config->get(self::CONFIG_KEY . '.keyFilePath')),
+            'projectId' => $config->get(self::CONFIG_KEY . '.project_id'),
+            'keyFilePath' => $this->getKeyContent($config->get(self::CONFIG_KEY . '.credentials_path')),
         ];
     }
 
@@ -92,8 +92,7 @@ class LaravelPubSubServiceProvider extends ServiceProvider
     public function provides() : array
     {
         return [
-            PubSubClientContract::class,
-            'google-pubsub.client',
+            'google-pubsub.broadcaster.client',
         ];
     }
 }
