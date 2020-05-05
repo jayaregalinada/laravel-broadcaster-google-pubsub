@@ -11,7 +11,7 @@ Laravel Broadcaster using [Google PubSub](https://cloud.google.com/pubsub/)
 
 ##### Install Composer
 ```sh
-composer install jag/laravel-broadcaster-google-pubsub
+composer require jag/laravel-broadcaster-google-pubsub
 ```
 
 ##### Add Service Provider
