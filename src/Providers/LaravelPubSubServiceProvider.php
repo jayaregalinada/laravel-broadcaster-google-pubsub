@@ -5,36 +5,68 @@ namespace Jag\Broadcaster\GooglePubSub\Providers;
 use Illuminate\Support\Str;
 use Google\Cloud\PubSub\PubSubClient;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Broadcasting\BroadcastManager;
-use Jag\Broadcaster\GooglePubSub\Contract\PubSubClientContract;
-use Jag\Broadcaster\GooglePubSub\Console\PubSubSubscribeCommand;
-use Jag\Broadcaster\GooglePubSub\Exceptions\KeyNotFoundException;
+use Jag\Exceptions\GooglePubSub\KeyNotFoundException;
+use Jag\Contracts\GooglePubSub\PubSubClient as PubSubClientContract;
 use Jag\Broadcaster\GooglePubSub\Broadcasters\GooglePubSubBroadcaster;
-use Jag\Broadcaster\GooglePubSub\Contract\PubSubSubscribeCommandContract;
 use const DIRECTORY_SEPARATOR;
 
 class LaravelPubSubServiceProvider extends ServiceProvider
 {
+    protected const CONFIG_KEY = 'broadcasting.connections.google';
 
     public function register() : void
     {
         $this->mergeConfigFrom(dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR,
-                ['config', 'google.php']), 'broadcasting.google');
+                ['config', 'google.php']), self::CONFIG_KEY);
         $this->bindClient();
     }
 
     protected function bindClient() : void
     {
         $this->app->singleton(PubSubClientContract::class, function ($app) {
-            /** @var \Illuminate\Contracts\Config\Repository $config */
-            $config = $app->make('config');
-
-            return new PubSubClient([
-                'projectId' => $config->get('broadcasting.google.projectId'),
-                'keyFilePath' => $this->getKeyContent($config->get('broadcasting.google.keyFilePath')),
-            ]);
+            return new PubSubClient($this->createClientConfig($app->make('config')));
         });
-        $this->app->bind('google-pubsub.client', PubSubClientContract::class);
+        $this->app->bind('google-pubsub.broadcaster.client', PubSubClientContract::class);
+    }
+
+    protected function createClientConfig(Repository $config)
+    {
+        if (!empty($config->get(self::CONFIG_KEY . '.override_config', []))) {
+            return array_merge(
+                $config->get(self::CONFIG_KEY . '.override_config', []),
+                [
+                    'projectId' => $config->get(self::CONFIG_KEY . '.projectId'),
+                ]
+            );
+        }
+
+        return [
+            'projectId' => $config->get(self::CONFIG_KEY . '.projectId'),
+            'keyFilePath' => $this->getKeyContent($config->get(self::CONFIG_KEY . '.keyFilePath')),
+        ];
+    }
+
+    /**
+     * @param string|null $path
+     *
+     * @throws \Jag\Exceptions\GooglePubSub\KeyNotFoundException
+     * @return string
+     */
+    protected function getKeyContent($path = null) : string
+    {
+        if ($path === null) {
+            return $this->getKeyContent(storage_path('key.json'));
+        }
+        if (Str::startsWith($path, 'storage')) {
+            return $this->getKeyContent(storage_path(substr($path, 8)));
+        }
+        if (!file_exists($path)) {
+            throw new KeyNotFoundException($path);
+        }
+
+        return $path;
     }
 
     public function boot() : void
@@ -45,7 +77,15 @@ class LaravelPubSubServiceProvider extends ServiceProvider
     protected function bootGooglePubSubBroadcaster(BroadcastManager $manager) : void
     {
         $manager->extend('google', function ($app) {
-            return new GooglePubSubBroadcaster($app->make(PubSubClientContract::class), $app->make('log'));
+            /** @var Repository $config */
+            $config = $app->make('config');
+
+            return new GooglePubSubBroadcaster(
+                $app->make(PubSubClientContract::class),
+                $app->make('log'),
+                $config->get(self::CONFIG_KEY . '.auto_create_topic'),
+                $app->make($config->get(self::CONFIG_KEY . '.payload_class'))
+            );
         });
     }
 
@@ -56,26 +96,4 @@ class LaravelPubSubServiceProvider extends ServiceProvider
             'google-pubsub.client',
         ];
     }
-
-    /**
-     * @param null|string $path
-     *
-     * @throws \Jag\Broadcaster\GooglePubSub\Exceptions\KeyNotFoundException
-     * @return string
-     */
-    protected function getKeyContent($path = null) : string
-    {
-        if ($path === null) {
-            return $this->getKeyContent(storage_path('key.json'));
-        }
-        if (Str::startsWith($path, 'storage')) {
-            return $this->getKeyContent(storage_path($path));
-        }
-        if (!file_exists($path)) {
-            throw new KeyNotFoundException($path);
-        }
-
-        return $path;
-    }
-
 }
