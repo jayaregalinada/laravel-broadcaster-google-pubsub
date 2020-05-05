@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c6e31b8037d95f6117d296417f2156e",
+    "content-hash": "84878ce14ea2ad8d2c9fdb78696c77f8",
     "packages": [
         {
             "name": "brick/math",
@@ -910,6 +910,86 @@
                 "url"
             ],
             "time": "2019-07-01T23:21:34+00:00"
+        },
+        {
+            "name": "jag/laravel-contracts-google-pubsub",
+            "version": "v0.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jayaregalinada/laravel-contracts-google-pubsub.git",
+                "reference": "1e6acd0786da983786c4b2dbc4d28366a4acb7dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jayaregalinada/laravel-contracts-google-pubsub/zipball/1e6acd0786da983786c4b2dbc4d28366a4acb7dd",
+                "reference": "1e6acd0786da983786c4b2dbc4d28366a4acb7dd",
+                "shasum": ""
+            },
+            "require": {
+                "google/cloud-pubsub": "^1.24",
+                "php": "^7.1"
+            },
+            "suggest": {
+                "jag/laravel-broadcaster-google-pubsub": "Implementation of Google PubSub in Laravel Broadcaster",
+                "jag/laravel-subscriber-google-pubsub": "For Google PubSub Subscriber in Laravel"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jag\\Contracts\\GooglePubSub\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jay Are Galinada",
+                    "email": "jayaregalinada@gmail.com"
+                }
+            ],
+            "description": "Complementary contracts for jag/laravel-broadcaster-google-pubsub and jag/laravel-subscriber-google-pubsub",
+            "time": "2020-05-05T02:37:20+00:00"
+        },
+        {
+            "name": "jag/laravel-exceptions-google-pubsub",
+            "version": "v0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jayaregalinada/laravel-exceptions-google-pubsub.git",
+                "reference": "54edf6d6b7cd239cfa68c3fa12c81a910229cd85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jayaregalinada/laravel-exceptions-google-pubsub/zipball/54edf6d6b7cd239cfa68c3fa12c81a910229cd85",
+                "reference": "54edf6d6b7cd239cfa68c3fa12c81a910229cd85",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "google/cloud-pubsub": "^1.24",
+                "php": "^7.1",
+                "symfony/http-kernel": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jag\\Exceptions\\GooglePubSub\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jay Are Galinada",
+                    "email": "jayaregalinada@gmail.com"
+                }
+            ],
+            "description": "Complementary package for jag/laravel-*-google-pubsub",
+            "time": "2020-05-05T04:05:09+00:00"
         },
         {
             "name": "laravel/framework",
@@ -5777,12 +5857,13 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.1"
+        "php": "^7.1",
+        "ext-json": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"
