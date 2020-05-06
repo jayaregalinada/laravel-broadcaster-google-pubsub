@@ -11,8 +11,8 @@
     "illuminate/contracts": "^7.0",
     "illuminate/log": "^7.0",
     "illuminate/support": "^7.0",
-    "jag/laravel-contracts-google-pubsub": "^0.1.3",
-    "jag/laravel-exceptions-google-pubsub": "^0.1.2"
+    "jag/laravel-contracts-google-pubsub": "^0.1",
+    "jag/laravel-exceptions-google-pubsub": "^0.1"
   },
   "require-dev": {
     "orchestra/testbench": "^5.2",
